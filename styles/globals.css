@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+html {
+  font-size: 16.5px;
+}
+@media (max-width: 768px) {
+  html {
+    font-size: 17.5px;
+  }
+}
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --new: #ff0000;
+  --card: #0a0a0a;
+  --border: #333333;
+  --muted: #1a1a1a;
+  --muted-foreground: #a3a3a3;
+  --overlay-black: #000000;
+
+  --color-primary: 255 0 0; /* Normal */
+  --color-primary-100: 255 225 225; /* Light */
+  --color-primary-200: 255 194 194; /* Light :hover */
+  --color-primary-300: 255 163 163; /* Light :active */
+  --color-primary-400: 255 102 102; /* Normal :hover */
+  --color-primary-500: 255 41 41; /* Normal :active */
+  --color-primary-600: 255 0 0; /* Dark */
+  --color-primary-700: 200 0 0; /* Dark :hover */
+  --color-primary-800: 150 0 0; /* Dark :active */
+  --color-primary-900: 100 0 0; /* Darker */
+
+  /* Secondary Palette (Black/Dark) */
+  --color-secondary: 17 24 39; /* Normal*/
+  --color-secondary-100: 243 244 246; /* Light */
+  --color-secondary-200: 229 231 235; /* Light :hover */
+  --color-secondary-300: 209 213 219; /* Light :active */
+  --color-secondary-400: 156 163 175; /* Normal :hover */
+  --color-secondary-500: 107 114 128; /* Normal :active */
+  --color-secondary-600: 75 85 99; /* Dark */
+  --color-secondary-700: 55 65 81; /* Dark :hover */
+  --color-secondary-800: 31 41 55; /* Dark :active */
+  --color-secondary-900: 17 24 39; /* Darker */
+
+  /* Table / Dashboard tokens */
+  --color-secondary-border: #333333;
+  --color-one: 255 0 0; /* alias for primary */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-overlay-black: var(--overlay-black);
+
+  /* Primary Palette */
+  --color-primary: rgb(var(--color-primary));
+  --color-primary-100: rgb(var(--color-primary-100));
+  --color-primary-200: rgb(var(--color-primary-200));
+  --color-primary-300: rgb(var(--color-primary-300));
+  --color-primary-400: rgb(var(--color-primary-400));
+  --color-primary-500: rgb(var(--color-primary-500));
+  --color-primary-600: rgb(var(--color-primary-600));
+  --color-primary-700: rgb(var(--color-primary-700));
+  --color-primary-800: rgb(var(--color-primary-800));
+  --color-primary-900: rgb(var(--color-primary-900));
+
+  /* Secondary Palette */
+  --color-secondary: rgb(var(--color-secondary));
+  --color-secondary-100: rgb(var(--color-secondary-100));
+  --color-secondary-200: rgb(var(--color-secondary-200));
+  --color-secondary-300: rgb(var(--color-secondary-300));
+  --color-secondary-400: rgb(var(--color-secondary-400));
+  --color-secondary-500: rgb(var(--color-secondary-500));
+  --color-secondary-600: rgb(var(--color-secondary-600));
+  --color-secondary-700: rgb(var(--color-secondary-700));
+  --color-secondary-800: rgb(var(--color-secondary-800));
+  --color-secondary-900: rgb(var(--color-secondary-900));
+
+  /* Table tokens */
+  --color-secondary-border: var(--color-secondary-border);
+  --color-one: rgb(var(--color-one));
+
+  /* Font */
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl: 1200px;
+}
+/* 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  /*max-width -- breakpoints */
+  @media (width >= --breakpoint-sm) { max-width: var(--breakpoint-sm); }
+  @media (width >= --breakpoint-md) { max-width: var(--breakpoint-md); }
+  @media (width >= --breakpoint-lg) { max-width: var(--breakpoint-lg); }
+  @media (width >= --breakpoint-xl) { max-width: var(--breakpoint-xl); }
+  /* الـ 2XL هيثبت برضه على 1200 لأننا حددنا الـ breakpoint بتاعها كدة */
+}
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Custom Swiper Pagination */
+.hero-swiper .swiper-pagination-bullet {
+  width: 12px !important;
+  height: 12px !important;
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  border-radius: 50% !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  opacity: 1 !important;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  width: 36px !important;
+  border-radius: 8px !important;
+  background-color: rgb(var(--color-primary)) !important;
+}
+
+.hero-swiper .swiper-pagination-bullets {
+  bottom: 24px !important;
+}
+

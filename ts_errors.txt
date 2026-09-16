@@ -1,0 +1,12 @@
+app/[locale]/dashboard/about/page.tsx(22,5): error TS2554: Expected 1 arguments, but got 2.
+app/[locale]/dashboard/contact/page.tsx(52,7): error TS2322: Type '"name"' is not assignable to type 'keyof Contact'.
+app/[locale]/dashboard/service/[id]/edit/page.tsx(19,5): error TS2554: Expected 2 arguments, but got 3.
+app/[locale]/dashboard/service/page.tsx(105,5): error TS2554: Expected 1 arguments, but got 2.
+components/home/Hero.tsx(7,17): error TS7016: Could not find a declaration file for module 'aos'. 'D:/Web-Development/projects/next.js/codixia/e-commerce/node_modules/aos/dist/aos.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/aos` if it exists or add a new declaration (.d.ts) file containing `declare module 'aos';`
+components/home/ParentCategories.tsx(22,32): error TS2304: Cannot find name 'CategoryResponse'.
+components/home/ParentCategories.tsx(23,21): error TS2304: Cannot find name 'Category'.
+components/shared/AddPage.tsx(599,19): error TS2322: Type '(selected: SingleValue<SelectOption> | null) => void' is not assignable to type '(newValue: MultiValue<SelectOption> | SingleValue<SelectOption>, actionMeta: ActionMeta<SelectOption>) => void'.
+  Types of parameters 'selected' and 'newValue' are incompatible.
+    Type 'MultiValue<SelectOption> | SingleValue<SelectOption>' is not assignable to type 'SingleValue<SelectOption>'.
+      Type 'readonly SelectOption[]' is missing the following properties from type 'SelectOption': value, label
