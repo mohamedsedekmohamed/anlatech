@@ -1,13 +1,17 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, FileText } from 'lucide-react';
+import { FileText } from 'lucide-react';
+import { resolveImageUrl, DEFAULT_IMAGES } from '@/utils/imageHelper';
 
 interface Product {
   id: number | string;
   name: string;
   description?: string;
   image?: string;
+  image_url?: string;
   price?: string | number;
   final_price?: string | number;
   discount?: string | number;
@@ -20,6 +24,9 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, locale }: ProductCardProps) {
+  const initialSrc = resolveImageUrl(product.image_url || product.image, 'product');
+  const [imgSrc, setImgSrc] = useState(initialSrc);
+
   return (
     <Link
       href={`/${locale}/catalog/${product.id}`}
@@ -27,19 +34,14 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
     >
       {/* Image */}
       <div className="relative w-full aspect-square bg-background overflow-hidden">
-        {product.image && product.image.trim() !== '' ? (
-          <Image
-            src={product.image}
-            alt={product.name || 'Product'}
-            fill
-            className="object-cover p-5 group-hover:scale-105 transition-transform duration-600 ease-out"
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-background">
-            <span className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">No Image</span>
-          </div>
-        )}
+        <Image
+          src={imgSrc}
+          alt={product.name || 'Product'}
+          fill
+          className="object-cover p-5 group-hover:scale-105 transition-transform duration-600 ease-out"
+          sizes="(max-width: 768px) 50vw, 25vw"
+          onError={() => setImgSrc(DEFAULT_IMAGES.product)}
+        />
         
         {/* PDF Link Overlay */}
         {product.pdf && product.pdf.trim() !== '' && (
@@ -65,12 +67,11 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
         <h3 className="font-bold text-base md:text-lg text-foreground line-clamp-1 group-hover:text-primary transition-colors leading-snug">
           {product.name}
         </h3>
-
-        {/* {product.description && (
-          <p className="text-xs md:text-sm text-[#a1a1a1] line-clamp-2 mt-1 mb-3 grow leading-relaxed">
-            {product.description}
+        {product.price && (
+          <p className="text-sm font-semibold text-primary mt-1">
+            ${product.price}
           </p>
-        )} */}
+        )}
       </div>
     </Link>
   );

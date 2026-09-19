@@ -10,6 +10,15 @@ const nextConfig: NextConfig = {
         hostname: 'anlatech.mazoom.online',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
     ],
   },
 };

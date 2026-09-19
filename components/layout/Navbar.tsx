@@ -51,43 +51,31 @@ export default function Navbar() {
       dir={isRtl ? 'rtl' : 'ltr'}
     >
       <div className="container">
-        {/* استبدلنا الـ Grid بـ Flex لمرونة أعلى في التجاوب */}
         <div className="flex items-center justify-between gap-4">
           
-          {/* Logo + Brand */}
+          {/* Logo 1 (Far Left) */}
           <Link
             href={`/${locale}`}
-            className="flex items-center gap-3 md:gap-4 shrink-0"
+            className="flex items-center shrink-0"
           >
             {isLoading ? (
               <div className="h-10 w-28 md:h-14 md:w-44 bg-white/10 animate-pulse rounded-xl" />
             ) : (
-              <>
-             {/* حاوية مرنة تجمع الشعارين مع وجود مسافة بينهما */}
-<div className="flex items-center gap-3 md:gap-4">
-  
-  
-  {logoUrl && (
-    <div className="flex items-center backdrop-blur-md border-transparent rounded-full px-2.5 py-1.5 md:px-3.5 md:py-2 shadow-sm hover:border-primary/40 transition-all duration-300">
-      <Image
-        src={logoUrl}
-        alt={brandName || "Logo"}
-        width={40}
-        height={40}
-        className="w-8 h-8 md:w-10 md:h-10 object-contain transition-transform duration-300 hover:scale-105"
-      />
-    </div>
-  )}
-
-
-
-</div>
-
-              </>
+              logoUrl1 && (
+                <div className="flex items-center backdrop-blur-md border-transparent rounded-full px-2.5 py-1.5 md:px-3.5 md:py-2 shadow-sm hover:border-primary/40 transition-all duration-300">
+                  <Image
+                    src={logoUrl1}
+                    alt="Relax Logo"
+                    width={40}
+                    height={40}
+                    className="w-8 h-8 md:w-10 md:h-10 object-contain transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+              )
             )}
           </Link>
 
-          {/* Desktop Menu */}
+          {/* Desktop Menu (Centered) */}
           <div className="hidden md:flex items-center justify-center gap-6 lg:gap-10">
             {navLinks.map((link) => {
               const normalizedPath = pathname.replace(new RegExp(`^/${locale}`), '') || '/';
@@ -118,19 +106,21 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Right Actions & Mobile Toggle */}
+          {/* Logo 2 (Far Right) & Mobile Toggle */}
           <div className="flex items-center gap-3 shrink-0">
-  {logoUrl1 && (
-    <div className="flex items-center backdrop-blur-md border-transparent rounded-full px-2.5 py-1.5 md:px-3.5 md:py-2 shadow-sm hover:border-primary/40 transition-all duration-300">
-      <Image
-        src={logoUrl1}
-        alt={brandName || "Logo 2"}
-        width={40}
-        height={40}
-        className="w-8 h-8 md:w-10 md:h-10 object-contain transition-transform duration-300 hover:scale-105"
-      />
-    </div>
-  )}
+            {logoUrl && (
+              <Link href={`/${locale}`} className="flex items-center">
+                <div className="flex items-center backdrop-blur-md border-transparent rounded-full px-2.5 py-1.5 md:px-3.5 md:py-2 shadow-sm hover:border-primary/40 transition-all duration-300">
+                  <Image
+                    src={logoUrl}
+                    alt={brandName || "Logo"}
+                    width={40}
+                    height={40}
+                    className="w-8 h-8 md:w-10 md:h-10 object-contain transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+              </Link>
+            )}
             
             {/* Mobile Menu Button */}
             <button

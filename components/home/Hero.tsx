@@ -10,17 +10,18 @@ import "swiper/css/pagination";
 import { userHome } from "@/services/userHome";
 import { useApiGet } from "@/hooks/useApi";
 import { useLocale } from "next-intl";
+import { resolveImageUrl } from "@/utils/imageHelper";
 
-// 1. Updated interface to match your JSON output
 export interface BannerItem {
   id: number;
-  name: string;
+  name?: string;
+  title?: string;
   description: string;
-  image: string | null;
+  image?: string | null;
+  image_url?: string | null;
 }
 
 type Props = {
-  // Keeping this as a fallback in case you want to pass initial data
   initialBanners?: BannerItem[]; 
 };
 
@@ -28,20 +29,15 @@ export default function HeroSlider({ initialBanners = [] }: Props) {
   const swiperRef = useRef<SwiperType | null>(null);
   const locale = useLocale();
   
-  // 2. Changed variable name to make more sense (bannersResponse instead of footerResponse)
   const { data: bannersResponse, isLoading } = useApiGet(
     userHome.getBanners,
     locale
   );
 
-  // 3. Use API data if available, otherwise fall back to props
-  // Adjust `bannersResponse?.data` if your API wraps the array differently
   const slides: BannerItem[] = bannersResponse?.data || bannersResponse || initialBanners;
-
   const [activeIndex, setActiveIndex] = useState(0);
   const lastIndex = slides.length > 0 ? slides.length - 1 : 0;
 
-  // 4. Handle loading state to prevent layout jumps or empty swipers
   if (isLoading) {
     return (
       <section className="w-full h-[45vh] md:h-[60vh] lg:h-[90vh] flex items-center justify-center bg-muted/30 animate-pulse relative overflow-hidden">
@@ -68,12 +64,8 @@ export default function HeroSlider({ initialBanners = [] }: Props) {
         className="w-full h-[45vh] md:h-[60vh] lg:h-[90vh] hero-swiper"
       >
         {slides.map((slide) => {
-          // Resolve image URL
-          const bgImage = slide.image
-            ? slide.image.startsWith("http")
-              ? slide.image
-              : `https://bcknd.alnatech.de/storage/${slide.image}`
-            : "/images/default-banner.jpg";
+          const title = slide.title || slide.name || '';
+          const bgImage = resolveImageUrl(slide.image_url || slide.image, 'banner');
 
           return (
             <SwiperSlide
@@ -84,10 +76,10 @@ export default function HeroSlider({ initialBanners = [] }: Props) {
               {/* Overlay */}
               <div className="absolute inset-0 bg-black/60 pointer-events-none" />
 
-              {/* Content mapped to 'name' and 'description' */}
+              {/* Content */}
               <div className="relative z-10 w-full h-full flex justify-center items-center flex-col text-white px-8 md:px-12">
-                <h1 className="font-bold text-3xl md:text-5xl lg:text-[64px] lg:leading-[1.1]  mb-4   max-w-[90%] md:max-w-[80%]  leading-tight">
-                  {slide.name}
+                <h1 className="font-bold text-3xl md:text-5xl lg:text-[64px] lg:leading-[1.1] mb-4 max-w-[90%] md:max-w-[80%] leading-tight">
+                  {title}
                 </h1>
 
                 <p className="font-medium text-sm md:text-xl lg:text-[22px] lg:leading-8 xl:leading-9 mb-6 md:mb-10 text-gray-200 max-w-[90%] md:max-w-[600px] lg:max-w-[680px] xl:max-w-[750px] leading-7">

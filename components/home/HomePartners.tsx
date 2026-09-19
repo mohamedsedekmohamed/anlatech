@@ -3,6 +3,7 @@
 import { useLocale } from 'next-intl';
 import { useApiGet } from '@/hooks/useApi';
 import { userHome } from '@/services/userHome';
+import { resolveImageUrl } from '@/utils/imageHelper';
 
 export default function HomePartners() {
   const locale = useLocale();
@@ -15,13 +16,10 @@ export default function HomePartners() {
     return null;
   }
 
-  // We duplicate the array multiple times to ensure the marquee track is long enough
-  // to loop seamlessly across wide screens
   const duplicatedPartners = [...partners, ...partners, ...partners, ...partners];
 
   return (
     <section className="py-12 md:py-20 relative overflow-hidden bg-background">
-      {/* Dynamic CSS for the marquee animation */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes scroll {
           0% { transform: translateX(0); }
@@ -51,18 +49,12 @@ export default function HomePartners() {
       </div>
 
       <div className="relative w-full overflow-hidden marquee-track">
-        {/* Gradients for smooth fade effect on edges */}
         <div className="absolute start-0 top-0 bottom-0 w-16 md:w-48 bg-gradient-to-r rtl:bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
         <div className="absolute end-0 top-0 bottom-0 w-16 md:w-48 bg-gradient-to-l rtl:bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
         
         <div className={`flex w-[max-content] ${isRtl ? 'animate-marquee-rtl' : 'animate-marquee'}`}>
           {duplicatedPartners.map((partner: any, idx: number) => {
-            let imageUrl = partner.image_url;
-            if (!imageUrl) {
-               imageUrl = partner.image?.startsWith('http') 
-                ? partner.image 
-                : `https://bcknd.alnatech.de/storage/${partner.image}`;
-            }
+            const imageUrl = resolveImageUrl(partner.image_url || partner.image, 'partner');
 
             return (
               <div 
@@ -72,15 +64,18 @@ export default function HomePartners() {
                 <div className="w-full h-[140px] md:h-[180px] flex items-center justify-center p-6 md:p-8 rounded-3xl border border-white/5 bg-white/3 hover:bg-white/5 hover:border-primary/30 transition-all duration-300">
                   {imageUrl ? (
                     <img 
-                      src={encodeURI(imageUrl)} 
+                      src={imageUrl} 
                       alt={partner.name || 'Partner'} 
                       className="max-w-full max-h-full object-contain grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?q=80&w=400';
+                      }}
                     />
                   ) : (
                     <span className="text-white/30 font-bold text-lg">{partner.name}</span>
                   )}
                 </div>
-                {partner.name && imageUrl && (
+                {partner.name && (
                   <span className="text-white/60 font-semibold text-sm md:text-base text-center group-hover:text-white transition-colors duration-300">
                     {partner.name}
                   </span>
