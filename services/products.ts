@@ -57,7 +57,8 @@ export const productsUser = {
     api.get('/user/home/products', {
       params: { local: locale, category_id, page, parent: parent ? 1 : 0 },
     }),
-  getProductDetails: (id: string, locale: string): Promise<AxiosResponse> =>
+  getProductDetails:
+   (id: string, locale: string): Promise<AxiosResponse> =>
     api.get(`/user/home/product/${id}`, {
       params: { local: locale },
     }),
