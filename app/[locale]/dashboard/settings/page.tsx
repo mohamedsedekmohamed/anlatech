@@ -7,6 +7,13 @@ import { settingsAdmin } from '@/services/settings';
 import { useLocale, useTranslations } from 'next-intl';
 import MapPicker from '@/components/shared/MapPicker';
 
+const getVal = (val: any, key: string): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  if (Array.isArray(val)) return val[0] ?? '';
+  return val[key] ?? '';
+};
+
 export default function EditSettingsPage() {
   const router = useRouter();
   const locale = useLocale();
@@ -18,7 +25,7 @@ export default function EditSettingsPage() {
     settingsAdmin.getSettings,
     locale
   );
-  const settingsData = settingsResponse;
+  const settingsData = settingsResponse?.data || settingsResponse;
 
   // 2️⃣ أكشن تحديث وحفظ البيانات
   const { execute: updateSettings, isLoading: isSaving } = useApiAction(settingsAdmin.updateSettings, {
@@ -51,7 +58,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: false,
       section: t('sections.name'),
-      sectionOrder: 1,
+      sectionOrder: 2,
     },
     {
       name: 'name_1_ar',
@@ -59,7 +66,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: false,
       section: t('sections.name'),
-      sectionOrder: 1,
+      sectionOrder: 2,
     },
     {
       name: 'name_2_en',
@@ -67,7 +74,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: false,
       section: t('sections.name_1'),
-      sectionOrder: 1,
+      sectionOrder: 3,
     },
     {
       name: 'name_2_ar',
@@ -75,7 +82,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: false,
       section: t('sections.name_1'),
-      sectionOrder: 1,
+      sectionOrder: 3,
     },
 
     {
@@ -94,6 +101,24 @@ export default function EditSettingsPage() {
       section: t('sections.branding'),
       sectionOrder: 1,
     },
+
+    // ─── Currency Settings ───
+    {
+      name: 'currency_en',
+      label: t('currencyEn'),
+      type: 'text',
+      required: true,
+      section: t('sections.currency'),
+      sectionOrder: 4,
+    },
+    {
+      name: 'currency_ar',
+      label: t('currencyAr'),
+      type: 'text',
+      required: true,
+      section: t('sections.currency'),
+      sectionOrder: 4,
+    },
     
     // ─── Contact Information ───
     {
@@ -102,7 +127,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: true,
       section: t('sections.contact'),
-      sectionOrder: 2,
+      sectionOrder: 5,
     },
     {
       name: 'wattsapp',
@@ -110,7 +135,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: true,
       section: t('sections.contact'),
-      sectionOrder: 2,
+      sectionOrder: 5,
     },
     {
       name: 'email',
@@ -118,7 +143,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: true,
       section: t('sections.contact'),
-      sectionOrder: 2,
+      sectionOrder: 5,
     },
     {
       name: 'address',
@@ -126,7 +151,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: true,
       section: t('sections.contact'),
-      sectionOrder: 2,
+      sectionOrder: 5,
     },
 
     // ─── Location Settings ───
@@ -140,7 +165,7 @@ export default function EditSettingsPage() {
         return null;
       },
       section: t('sections.location'),
-      sectionOrder: 3,
+      sectionOrder: 6,
       render: ({ formData, setFormData }) => (
         <MapPicker 
           lat={formData.lat} 
@@ -163,7 +188,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: true,
       section: t('sections.social'),
-      sectionOrder: 4,
+      sectionOrder: 7,
     },
     {
       name: 'insta',
@@ -171,7 +196,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: true,
       section: t('sections.social'),
-      sectionOrder: 4,
+      sectionOrder: 7,
     },
     {
       name: 'tiktok',
@@ -179,7 +204,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: true,
       section: t('sections.social'),
-      sectionOrder: 4,
+      sectionOrder: 7,
     },
 
     // ─── Apps & Metrics ───
@@ -189,7 +214,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: true,
       section: t('sections.apps'),
-      sectionOrder: 5,
+      sectionOrder: 8,
     },
     {
       name: 'android_app',
@@ -197,7 +222,7 @@ export default function EditSettingsPage() {
       type: 'text',
       required: true,
       section: t('sections.apps'),
-      sectionOrder: 5,
+      sectionOrder: 8,
     },
     {
       name: 'min_order',
@@ -205,7 +230,7 @@ export default function EditSettingsPage() {
       type: 'number',
       required: true,
       section: t('sections.apps'),
-      sectionOrder: 5,
+      sectionOrder: 8,
     },
   ];
 
@@ -226,7 +251,7 @@ export default function EditSettingsPage() {
     if (data.android_app) formData.append('android_app', data.android_app);
     if (data.min_order !== undefined) formData.append('min_order', String(data.min_order));
     
-    // Objects mapping (براند ونيم وسينسي)
+    // Objects mapping (براند ونيم والعملة)
     if (data.brand_name_en) formData.append('brand_name[en]', data.brand_name_en);
     if (data.brand_name_ar) formData.append('brand_name[ar]', data.brand_name_ar);
     
@@ -235,6 +260,9 @@ export default function EditSettingsPage() {
     
     if (data.name_2_en) formData.append('name_2[en]', data.name_2_en);
     if (data.name_2_ar) formData.append('name_2[ar]', data.name_2_ar);
+
+    if (data.currency_en) formData.append('currency[en]', data.currency_en);
+    if (data.currency_ar) formData.append('currency[ar]', data.currency_ar);
 
     // معالجة اللوجو الأول واللوجو الثاني بصيغة Binary Files
     if (data.logo && typeof data.logo !== 'string') {
@@ -262,8 +290,10 @@ export default function EditSettingsPage() {
       isSaving={fetchingSettings || isSaving}
       // 5️⃣ تعبئة الحقول تلقائياً بالاعتماد على أسماء الـ Fields الصحيحة وحماية الـ null
       initialData={settingsData ? {
-        brand_name_en: settingsData.brand_name?.en ?? '',
-        brand_name_ar: settingsData.brand_name?.ar ?? '',
+        brand_name_en: getVal(settingsData.brand_name, 'en'),
+        brand_name_ar: getVal(settingsData.brand_name, 'ar'),
+        currency_en: getVal(settingsData.currency, 'en') || (settingsData.currency_en ?? ''),
+        currency_ar: getVal(settingsData.currency, 'ar') || (settingsData.currency_ar ?? ''),
         phone: settingsData.phone ?? '',
         wattsapp: settingsData.wattsapp ?? '',
         email: settingsData.email ?? '',
@@ -278,10 +308,10 @@ export default function EditSettingsPage() {
         min_order: settingsData.min_order ?? '',
         logo: settingsData.logo_url ?? '',
         logo1: settingsData.logo_url1 ?? '',
-        name_1_en: settingsData.name_1?.en ?? '',
-        name_1_ar: settingsData.name_1?.ar ?? '',
-        name_2_en: settingsData.name_2?.en ?? '',
-        name_2_ar: settingsData.name_2?.ar ?? '',
+        name_1_en: getVal(settingsData.name_1, 'en'),
+        name_1_ar: getVal(settingsData.name_1, 'ar'),
+        name_2_en: getVal(settingsData.name_2, 'en'),
+        name_2_ar: getVal(settingsData.name_2, 'ar'),
       } : undefined}
     />
   );
