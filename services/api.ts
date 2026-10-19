@@ -6,7 +6,8 @@ import axios, {
 } from 'axios';
 import Cookies from "js-cookie";
 import { MdAcUnit } from 'react-icons/md';
-const BASE_URL: string = 'https://anlatech.mazoom.online/api/';
+const BASE_URL: string = 'https://bcknd.deluxart.ae/api/';
+
 // ─── Axios Instance ──────────────────────────────────────────────────────────
 const api: AxiosInstance = axios.create({
   baseURL: BASE_URL,

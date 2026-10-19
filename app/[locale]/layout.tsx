@@ -110,7 +110,10 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} suppressHydrationWarning>
-      <body className={`${locale === "ar" ? ibmArabic.className : poppins.className} antialiased`}>
+      <body
+        className={`${locale === "ar" ? ibmArabic.className : poppins.className} antialiased`}
+        suppressHydrationWarning
+      >
         <NextIntlClientProvider messages={messages} locale={locale}>
           <AOSInit />
           <Toaster position="top-center" />
