@@ -53,6 +53,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (ogImages.length === 0) ogImages.push({ url: "/favicon.ico", alt: title });
 
   return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://anlatech.mazoom.online'),
     title: {
       template: `%s | ${title}`,
       default: title,
