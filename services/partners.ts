@@ -1,4 +1,4 @@
-//https://anlatech.mazoom.online/api/admin/partners
+//https://bcknd.deluxart.ae/api/admin/partners
 
 import api from './api';
 import { AxiosResponse } from 'axios';

@@ -10,7 +10,7 @@ export const userHome = {
     api.get('/user/home/all_products', {
       params: { local: locale, page },
     }),
-  //https://anlatech.mazoom.online/api/user/home/banners
+  //https://bcknd.deluxart.ae/api/user/home/banners
 
   getBanners: (locale: string): Promise<AxiosResponse> =>
     api.get('/user/home/banners', {

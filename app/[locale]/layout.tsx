@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   let logo2 = "";
 
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://anlatech.mazoom.online/api';
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bcknd.deluxart.ae/api';
     const res = await fetch(`${baseUrl}/user/footer?local=${locale}`, {
       cache: 'no-store'
     });

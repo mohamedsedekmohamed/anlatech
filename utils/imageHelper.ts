@@ -28,9 +28,9 @@ export function resolveImageUrl(
 
   // If starts with /
   if (clean.startsWith('/')) {
-    return `https://anlatech.mazoom.online${clean}`;
+    return `https://bcknd.deluxart.ae${clean}`;
   }
 
   // Relative storage path
-  return `https://anlatech.mazoom.online/storage/${clean}`;
+  return `https://bcknd.deluxart.ae/storage/${clean}`;
 }

@@ -1,4 +1,4 @@
-//https://anlatech.mazoom.online/api/admin/banners
+//https://bcknd.deluxart.ae/api/admin/banners
 import { updateMotionValuesFromProps } from 'framer-motion';
 import api from './api';
 import { AxiosResponse } from 'axios';
@@ -19,7 +19,7 @@ export const bannersAdmin = {
       "Accept-Language": locale,
     },
   }),
-  //https://anlatech.mazoom.online/api/admin/banners/{id}/change-status
+  //https://bcknd.deluxart.ae/api/admin/banners/{id}/change-status
   updatestatus: (id: string | number, active: boolean): Promise<AxiosResponse> => api.post(`/admin/banners/${id}/change-status`, { active }),
   addBanner: (data: any): Promise<AxiosResponse> => api.post('/admin/banners', data),
   updateBanner: (id: string | number, data: any): Promise<AxiosResponse> => api.post(`/admin/banners/${id}`, data),
