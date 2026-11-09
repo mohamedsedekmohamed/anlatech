@@ -11,7 +11,7 @@ export default function FloatingWhatsApp() {
   const pathname = usePathname();
   const isRtl = locale === 'ar';
   const { data: response } = useApiGet(userHome.getFooter, locale);
-  const footerData = response?.data;
+  const footerData = response?.data?.id !== undefined ? response.data : (response?.data || response);
 
   if (pathname?.includes('/dashboard') || pathname?.includes('/auth')) {
     return null;

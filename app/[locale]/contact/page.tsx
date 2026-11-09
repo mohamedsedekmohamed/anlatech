@@ -11,6 +11,7 @@ import PageHero from '@/components/ui/PageHero';
 import { contactuser } from '@/services/userContact';
 import { useApiAction } from '@/hooks/useApi';
 import { motion } from 'framer-motion';
+import { normalizeSocialLinks, formatSocialUrl } from '@/utils/socialHelper';
 
 export default function ContactPage() {
   const locale = useLocale();
@@ -22,7 +23,7 @@ export default function ContactPage() {
   });
 
   const { data: response, isLoading } = useApiGet(userHome.getFooter, locale);
-  const contactData = response?.data;
+  const contactData = response?.data?.id !== undefined ? response.data : (response?.data || response);
 
   const [form, setForm] = React.useState({
     f_name: '',
@@ -259,26 +260,44 @@ export default function ContactPage() {
                 </a>
               )}
 
-              {contactData?.facebook && (
-                <a href={contactData.facebook} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 py-3.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-xl font-semibold text-sm hover:bg-blue-500 hover:text-white hover:shadow-xl hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all duration-300">
+              {normalizeSocialLinks(contactData?.facebook).map((url, idx, arr) => (
+                <a
+                  key={`fb-${idx}`}
+                  href={formatSocialUrl(url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-6 py-3.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-xl font-semibold text-sm hover:bg-blue-500 hover:text-white hover:shadow-xl hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all duration-300"
+                >
                   <Facebook className="w-4 h-4" />
-                  Facebook
+                  {arr.length > 1 ? `Facebook ${idx + 1}` : 'Facebook'}
                 </a>
-              )}
+              ))}
 
-              {contactData?.insta && (
-                <a href={contactData.insta} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 py-3.5 bg-pink-500/10 border border-pink-500/20 text-pink-400 rounded-xl font-semibold text-sm hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#e6683c] hover:to-[#bc1888] hover:text-white hover:shadow-xl hover:shadow-pink-500/20 hover:-translate-y-0.5 transition-all duration-300">
+              {normalizeSocialLinks(contactData?.insta).map((url, idx, arr) => (
+                <a
+                  key={`insta-${idx}`}
+                  href={formatSocialUrl(url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-6 py-3.5 bg-pink-500/10 border border-pink-500/20 text-pink-400 rounded-xl font-semibold text-sm hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#e6683c] hover:to-[#bc1888] hover:text-white hover:shadow-xl hover:shadow-pink-500/20 hover:-translate-y-0.5 transition-all duration-300"
+                >
                   <Instagram className="w-4 h-4" />
-                  Instagram
+                  {arr.length > 1 ? `Instagram ${idx + 1}` : 'Instagram'}
                 </a>
-              )}
+              ))}
 
-              {contactData?.tiktok && (
-                <a href={contactData.tiktok} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 py-3.5 bg-card/5 border border-white/10 text-neutral-300 rounded-xl font-semibold text-sm hover:bg-card hover:text-foreground hover:-translate-y-0.5 transition-all duration-300">
+              {normalizeSocialLinks(contactData?.tiktok).map((url, idx, arr) => (
+                <a
+                  key={`tiktok-${idx}`}
+                  href={formatSocialUrl(url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-6 py-3.5 bg-card/5 border border-white/10 text-neutral-300 rounded-xl font-semibold text-sm hover:bg-card hover:text-foreground hover:-translate-y-0.5 transition-all duration-300"
+                >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" /></svg>
-                  TikTok
+                  {arr.length > 1 ? `TikTok ${idx + 1}` : 'TikTok'}
                 </a>
-              )}
+              ))}
             </div>
           </div>
 

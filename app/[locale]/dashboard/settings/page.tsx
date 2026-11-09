@@ -6,6 +6,7 @@ import { useApiAction, useApiGet } from '@/hooks/useApi';
 import { settingsAdmin } from '@/services/settings'; 
 import { useLocale, useTranslations } from 'next-intl';
 import MapPicker from '@/components/shared/MapPicker';
+import { getSocialLinkAtIndex } from '@/utils/socialHelper';
 
 const getVal = (val: any, key: string): string => {
   if (!val) return '';
@@ -183,28 +184,58 @@ export default function EditSettingsPage() {
 
     // ─── Social Media Links ───
     {
-      name: 'facebook',
-      label: t('facebook'),
+      name: 'facebook_0',
+      label: t('facebook1'),
       type: 'text',
-      required: true,
+      required: false,
       section: t('sections.social'),
       sectionOrder: 7,
+      placeholder: 'https://facebook.com/...',
     },
     {
-      name: 'insta',
-      label: t('insta'),
+      name: 'facebook_1',
+      label: t('facebook2'),
       type: 'text',
-      required: true,
+      required: false,
       section: t('sections.social'),
       sectionOrder: 7,
+      placeholder: 'https://facebook.com/...',
     },
     {
-      name: 'tiktok',
-      label: t('tiktok'),
+      name: 'insta_0',
+      label: t('insta1'),
       type: 'text',
-      required: true,
+      required: false,
       section: t('sections.social'),
       sectionOrder: 7,
+      placeholder: 'https://instagram.com/...',
+    },
+    {
+      name: 'insta_1',
+      label: t('insta2'),
+      type: 'text',
+      required: false,
+      section: t('sections.social'),
+      sectionOrder: 7,
+      placeholder: 'https://instagram.com/...',
+    },
+    {
+      name: 'tiktok_0',
+      label: t('tiktok1'),
+      type: 'text',
+      required: false,
+      section: t('sections.social'),
+      sectionOrder: 7,
+      placeholder: 'https://tiktok.com/@...',
+    },
+    {
+      name: 'tiktok_1',
+      label: t('tiktok2'),
+      type: 'text',
+      required: false,
+      section: t('sections.social'),
+      sectionOrder: 7,
+      placeholder: 'https://tiktok.com/@...',
     },
 
     // ─── Apps & Metrics ───
@@ -244,12 +275,35 @@ export default function EditSettingsPage() {
     if (data.address) formData.append('address', data.address);
     if (data.lat) formData.append('lat', String(data.lat));
     if (data.lng) formData.append('lng', String(data.lng));
-    if (data.facebook) formData.append('facebook', data.facebook);
-    if (data.insta) formData.append('insta', data.insta);
-    if (data.tiktok) formData.append('tiktok', data.tiktok);
     if (data.ios_app) formData.append('ios_app', data.ios_app);
     if (data.android_app) formData.append('android_app', data.android_app);
     if (data.min_order !== undefined) formData.append('min_order', String(data.min_order));
+
+    // Social Media Links (Array format: max 2 links per platform)
+    const appendSocialLinks = (key: string, v0?: any, v1?: any, arr?: any) => {
+      let raw: any[] = [];
+      if (Array.isArray(arr)) {
+        raw = arr;
+      } else {
+        raw = [v0, v1];
+      }
+      const clean = raw
+        .map((item) => (typeof item === 'string' ? item.trim() : ''))
+        .filter(Boolean)
+        .slice(0, 2);
+
+      if (clean.length > 0) {
+        clean.forEach((url, idx) => {
+          formData.append(`${key}[${idx}]`, url);
+        });
+      } else {
+        formData.append(key, JSON.stringify([]));
+      }
+    };
+
+    appendSocialLinks('facebook', data.facebook_0, data.facebook_1, data.facebook);
+    appendSocialLinks('insta', data.insta_0, data.insta_1, data.insta);
+    appendSocialLinks('tiktok', data.tiktok_0, data.tiktok_1, data.tiktok);
     
     // Objects mapping (براند ونيم والعملة)
     if (data.brand_name_en) formData.append('brand_name[en]', data.brand_name_en);
@@ -300,9 +354,12 @@ export default function EditSettingsPage() {
         address: settingsData.address ?? '',
         lat: settingsData.lat ?? '',
         lng: settingsData.lng ?? '',
-        facebook: settingsData.facebook ?? '',
-        insta: settingsData.insta ?? '',
-        tiktok: settingsData.tiktok ?? '',
+        facebook_0: getSocialLinkAtIndex(settingsData.facebook, 0),
+        facebook_1: getSocialLinkAtIndex(settingsData.facebook, 1),
+        insta_0: getSocialLinkAtIndex(settingsData.insta, 0),
+        insta_1: getSocialLinkAtIndex(settingsData.insta, 1),
+        tiktok_0: getSocialLinkAtIndex(settingsData.tiktok, 0),
+        tiktok_1: getSocialLinkAtIndex(settingsData.tiktok, 1),
         ios_app: settingsData.ios_app ?? '',
         android_app: settingsData.android_app ?? '',
         min_order: settingsData.min_order ?? '',
